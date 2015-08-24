@@ -2,14 +2,20 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
-#カレントディレクトリ
-cdir=`dirname $0`
+#親ディレクトリ
+pdir=$(cd $(dirname $0)/..;pwd)
 
 #tsファイル保存先ディレクトリ
-tsdir=${cdir}/ts
+tsdir=${pdir}/ts
+if [ ! -e ${tsdir} ]; then
+`mkdir ${tsdir}`
+fi
 
 #EPG XMLファイル保存先ディレクトリ
-epgdir=${cdir}/epg_xml
+epgdir=${pdir}/epg_xml
+if [ ! -e ${epgdir} ]; then
+`mkdir ${epgdir}`
+fi
 
 #放送局種別
 btype=0
