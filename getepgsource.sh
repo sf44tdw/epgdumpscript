@@ -3,7 +3,7 @@
 #BSch=101(NHK BS1)
 
 #EPGDB更新プログラム(jar)のパス
-DBUpdater="~/EPGUpdater/EPGUpdater.jar"
+DBUpdater=${HOME}/EPGUpdater/EPGUpdater.jar
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
