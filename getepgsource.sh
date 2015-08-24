@@ -5,15 +5,15 @@
 #EPGDB更新プログラム(jar)のパス
 DBUpdater="~/EPGUpdater/EPGUpdater.jar"
 
-#ワークディレクトリをこのスクリプトが置かれている場所にする。
-cd `dirname $0`
-
-#このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
-edir=`dirname $0`
-
 #データ用ディレクトリの親ディレクトリ
 pdir=${edir}
 #pdir=$(cd $(dirname $0)/..;pwd)
+
+#ワークディレクトリをこのスクリプトが置かれている場所にする。
+cd ${pdir}
+
+#このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
+edir=`dirname $0`
 
 #tsファイル保存先ディレクトリ
 tsdir=${pdir}/ts
