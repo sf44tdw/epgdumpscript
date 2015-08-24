@@ -7,13 +7,18 @@ DBUpdater="~/EPGUpdater/EPGUpdater.jar"
 
 #このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
 edir=`dirname $0`
+echo ${edir}
 
 #データ用ディレクトリの親ディレクトリ
-pdir=${edir}
+pdir=${PWD}
+echo ${pdir}
+
 #pdir=$(cd $(dirname $0)/..;pwd)
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd ${edir}
+
+echo ${PWD}
 
 #tsファイル保存先ディレクトリ
 tsdir=${pdir}/ts
