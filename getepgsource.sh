@@ -12,7 +12,7 @@ cd `dirname $0`
 edir=`dirname $0`
 
 #データ用ディレクトリの親ディレクトリ
-pdir={edir}
+pdir=${edir}
 #pdir=$(cd $(dirname $0)/..;pwd)
 
 #tsファイル保存先ディレクトリ
