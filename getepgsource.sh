@@ -9,11 +9,11 @@ DBUpdater="~/EPGUpdater/EPGUpdater.jar"
 edir=`dirname $0`
 
 #データ用ディレクトリの親ディレクトリ
-pdir=${pdir}
+pdir=${edir}
 #pdir=$(cd $(dirname $0)/..;pwd)
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
-cd ${pdir}
+cd ${edir}
 
 #tsファイル保存先ディレクトリ
 tsdir=${pdir}/ts
