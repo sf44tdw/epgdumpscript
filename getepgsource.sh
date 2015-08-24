@@ -2,12 +2,17 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
+#EPGDB更新プログラム(jar)のパス
+DBUpdater="~/EPGUpdater/EPGUpdater.jar"
+
+#ワークディレクトリをこのスクリプトが置かれている場所にする。
+cd `dirname $0`
+
 #このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
 edir=`dirname $0`
 
 #データ用ディレクトリの親ディレクトリ
-#(通常はホームディレクトリ。)
-pdir=~
+pdir={edir}
 #pdir=$(cd $(dirname $0)/..;pwd)
 
 #tsファイル保存先ディレクトリ
@@ -56,3 +61,9 @@ epgdump ${btype} ${tsdir}/${channel}.ts ${epgdir}/${channel}.xml
 done
 
 rm -f ${tsdir}/*.ts
+
+
+java -jar ${DBUpdater} "UTF-8" ${epgdir}
+
+
+rm -f ${epgdir}/*.xml
