@@ -30,6 +30,12 @@ if [ ! -e ${epgdir} ]; then
 `mkdir ${epgdir}`
 fi
 
+#スクリプトのログディレクトリ
+LogDir=${pdir}/epg_xml
+if [ ! -e ${LogDir} ]; then
+`mkdir ${LogDir}`
+fi
+
 #多重起動防止機講
 SCRIPT_PID=${pdir}/lock.pid
 if [ -f $SCRIPT_PID ]; then
@@ -41,6 +47,15 @@ fi
 
 echo $$ > $SCRIPT_PID
 
+# ファイル更新日時が10日を越えたログファイルを削除
+PARAM_DATE_NUM=10
+find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
+
+#日付取得
+Date=`date "+%Y%m%d%H%M%S"`
+#ファイル名生成
+FileName=${Title}_"D"${Date}"P"$$"T"${Time}
+LogFile=${LogDir}${FileName}".log"
 
 #放送局種別
 btype=0
@@ -57,7 +72,7 @@ do
 
 echo ${channel}
 
-/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts
+/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>${LogFile} 2>&1
 
 case ${channel} in
 
@@ -79,10 +94,12 @@ done
 rm -f ${tsdir}/*.ts
 
 
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
+java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>${LogFile} 2>&1
 
 
 rm -f ${epgdir}/*.xml
+
+echo ${LogFile} >> ${LogFile}
 
 rm $SCRIPT_PID
 
