@@ -68,8 +68,8 @@ rm -f ${epgdir}/*.xml >> ${LogFile}  2>&1
 
 
 #in以降にチャンネル番号をスペースで区切って記入する。
-#for channel in 21 22 23 24 25 26 27 28 101
-for channel in 21 22
+for channel in 21 22 23 24 25 26 27 28 101
+#for channel in 21 22
 
 do
 
@@ -97,7 +97,7 @@ done
 rm -f ${tsdir}/*.ts
 
 
-#java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
+java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
 
 #更新プログラムを待たずに消しそうなのでコメントアウト
 #rm -f ${epgdir}/*.xml
