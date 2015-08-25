@@ -38,8 +38,8 @@ rm -f ${tsdir}/*.ts
 rm -f ${epgdir}/*.xml
 
 #in以降にチャンネル番号をスペースで区切って記入する。
-#for channel in 21 22 23 24 25 26 27 28 101
-for channel in 21
+for channel in 21 22 23 24 25 26 27 28 101
+#for channel in 21
 
 do
 
