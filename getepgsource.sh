@@ -31,7 +31,7 @@ if [ ! -e ${epgdir} ]; then
 fi
 
 #スクリプトのログディレクトリ
-LogDir=${pdir}/epg_xml
+LogDir=${pdir}/Log
 if [ ! -e ${LogDir} ]; then
 `mkdir ${LogDir}`
 fi
@@ -55,7 +55,7 @@ find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 Date=`date "+%Y%m%d%H%M%S"`
 #ファイル名生成
 FileName=${Title}_"D"${Date}"P"$$"T"${Time}
-LogFile=${LogDir}${FileName}".log"
+LogFile=${LogDir}"/"${FileName}".log"
 
 #放送局種別
 btype=0
