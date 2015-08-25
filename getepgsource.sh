@@ -60,11 +60,12 @@ LogFile=${LogDir}"/"${FileName}".log"
 #放送局種別
 btype=0
 
-#前回のファイルが残っているかも知れないので、念のため削除
-rm -f ${tsdir}/*.ts
-rm -f ${epgdir}/*.xml
-
 echo ${LogFile} > ${LogFile}
+
+#前回のファイルが残っているかも知れないので、念のため削除
+rm -f ${tsdir}/*.ts >> ${LogFile}  2>&1
+rm -f ${epgdir}/*.xml >> ${LogFile}  2>&1
+
 
 #in以降にチャンネル番号をスペースで区切って記入する。
 #for channel in 21 22 23 24 25 26 27 28 101
