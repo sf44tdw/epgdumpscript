@@ -64,15 +64,17 @@ btype=0
 rm -f ${tsdir}/*.ts
 rm -f ${epgdir}/*.xml
 
+echo ${LogFile} > ${LogFile}
+
 #in以降にチャンネル番号をスペースで区切って記入する。
-for channel in 21 22 23 24 25 26 27 28 101
-#for channel in 21
+#for channel in 21 22 23 24 25 26 27 28 101
+for channel in 21 22
 
 do
 
-echo ${channel}
+echo ${channel} >> ${LogFile}
 
-/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>${LogFile} 2>&1
+/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>>${LogFile} 2>&1
 
 case ${channel} in
 
@@ -86,7 +88,7 @@ case ${channel} in
 
 esac
 
-echo ${btype}
+#echo ${btype}
 epgdump ${btype} ${tsdir}/${channel}.ts ${epgdir}/${channel}.xml
 
 done
@@ -94,12 +96,12 @@ done
 rm -f ${tsdir}/*.ts
 
 
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>${LogFile} 2>&1
+#java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
+
+#更新プログラムを待たずに消しそうなのでコメントアウト
+#rm -f ${epgdir}/*.xml
 
 
-rm -f ${epgdir}/*.xml
-
-echo ${LogFile} >> ${LogFile}
 
 rm $SCRIPT_PID
 
