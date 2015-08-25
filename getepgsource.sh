@@ -30,6 +30,18 @@ if [ ! -e ${epgdir} ]; then
 `mkdir ${epgdir}`
 fi
 
+#多重起動防止機講
+SCRIPT_PID=${pdir}/lock.pid
+if [ -f $SCRIPT_PID ]; then
+  PID=`cat $SCRIPT_PID `
+  if (ps -e | awk '{print $1}' | grep $PID >/dev/null); then
+    exit
+  fi
+fi
+
+echo $$ > $SCRIPT_PID
+
+
 #放送局種別
 btype=0
 
@@ -71,3 +83,6 @@ java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
 
 
 rm -f ${epgdir}/*.xml
+
+rm $SCRIPT_PID
+
