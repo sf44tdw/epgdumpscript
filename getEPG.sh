@@ -35,6 +35,7 @@ LogFile=${LogDir_epgDump}"/"${FileName}".log"
 
 echo ${LogFile} > ${LogFile}
 
+ #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
 echo "*******************************************************************************" >> ${LogFile}
 echo "時間チェック" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
@@ -44,7 +45,6 @@ SKIP_CHECK_HOUR=${SKIP_NO}
 
 if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} ]; then
 
- #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
  #今の時間(何時?)
  NowHour=`date +%k`
 
@@ -63,6 +63,7 @@ if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} ]; then
 fi
 echo "*******************************************************************************" >> ${LogFile}
 
+ #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
 echo "*******************************************************************************" >> ${LogFile}
 echo "分数チェック" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
@@ -76,7 +77,7 @@ SKIP_CHECK_MINUTE=${SKIP_NO}
  if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} ]; then
  #01～03分以外では起動しない。
   if [ ${NowMin} != "01" -o ${NowMin} != "02" -o  ${NowMin} != "03" ]; then  
-   echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
+   echo ${NowMin} " は、01～03分以外です。">> ${LogFile}
    exit 1
  fi
   else
@@ -143,8 +144,8 @@ rm -f ${epgdir}/*.xml
 btype=0
 
 #in以降にチャンネル番号をスペースで区切って記入する。
-#for channel in 21 22 23 24 25 26 27 28 101
-for channel in 21 22
+for channel in 21 22 23 24 25 26 27 28 101
+#for channel in 21 22
 
 do
 echo "*******************************************************************************" >> ${LogFile}
