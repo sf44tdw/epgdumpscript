@@ -37,7 +37,7 @@ echo ${LogFile} > ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "TIME" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #この処理を飛ばして次に行くか。
 SKIP_CHECK_TIME=${SKIP_YES}
 
@@ -64,7 +64,7 @@ echo "**************************************************************************
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "instance" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #この処理を飛ばして次に行くか。
 SKIP_CHECK_INSTANCE=${SKIP_NO}
 
@@ -82,14 +82,14 @@ echo "**************************************************************************
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "ファイル更新日時が10日を越えたログファイルを削除" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 PARAM_DATE_NUM=10
 find ${LogDir_epgDump} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "受信" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
 
@@ -119,7 +119,7 @@ for channel in 21 22 23 24 25 26 27 28 101
 do
 echo "*******************************************************************************" >> ${LogFile}
 echo "受信チャンネル:"${channel} >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 /usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>>${LogFile} 2>&1
 
 case ${channel} in
@@ -144,7 +144,7 @@ echo "**************************************************************************
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "EPGDB更新" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)
 DBUpdaterDir=${HOME}/EPGUpdater
 
@@ -161,7 +161,7 @@ echo "**************************************************************************
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "instance" >> ${LogFile}
-`date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 if [ ${SKIP_CHECK_INSTANCE} = ${SKIP_NO} ]; then
  #多重起動防止機講
  # 同じ名前のプロセスが起動していたら起動しない。
