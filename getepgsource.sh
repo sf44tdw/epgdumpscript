@@ -12,9 +12,28 @@ DBUpdaterDir=${HOME}/EPGUpdater
 DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 
 
+#スクリプトのログディレクトリ
+LogDir=${HOME}/Log
+if [ ! -e ${LogDir} ]; then
+`mkdir ${LogDir}`
+fi
+
+#日付取得
+Date=`date "+%Y%m%d%H%M%S"`
+#ファイル名生成
+FileName="D"${Date}"P"$$
+LogFile=${LogDir}"/"${FileName}".log"
+
+echo ${LogFile} > ${LogFile}
+
+#多重起動防止機講
+# 同じ名前のプロセスが起動していたら起動しない。
+_pname=`basename $0`
+[ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
+
+
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
-
 
 #このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
 #データ用ディレクトリの親ディレクトリ
@@ -34,29 +53,6 @@ if [ ! -e ${epgdir} ]; then
 `mkdir ${epgdir}`
 fi
 
-#スクリプトのログディレクトリ
-LogDir=${HOME}/Log
-if [ ! -e ${LogDir} ]; then
-`mkdir ${LogDir}`
-fi
-
-
-#日付取得
-Date=`date "+%Y%m%d%H%M%S"`
-#ファイル名生成
-FileName="D"${Date}"P"$$
-LogFile=${LogDir}"/"${FileName}".log"
-
-#放送局種別
-btype=0
-
-echo ${LogFile} > ${LogFile}
-
-#多重起動防止機講
-# 同じ名前のプロセスが起動していたら起動しない。
-_pname=`basename $0`
-[ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
-
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
 find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
@@ -65,6 +61,8 @@ find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 rm -f ${tsdir}/*.ts >> ${LogFile}  2>&1
 rm -f ${epgdir}/*.xml >> ${LogFile}  2>&1
 
+#放送局種別
+btype=0
 
 #in以降にチャンネル番号をスペースで区切って記入する。
 for channel in 21 22 23 24 25 26 27 28 101
