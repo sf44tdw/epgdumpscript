@@ -30,7 +30,8 @@ _lockfile="/tmp/`basename $0`.lock"
 ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
 trap "rm $_lockfile; exit" 1 2 3 15
 
-
+echo "*******************************************************************************" >> ${LogDir_epgDump}
+echo "TIME" >> ${LogDir_epgDump}
 NowHour=`date +%H`
 if [ ! "06" -eq ${NowHour} ]; then  
   echo "Hour is "${NowHour} >> ${LogFile}
@@ -64,6 +65,7 @@ if [ ! "02" -eq ${NowHour} ]; then
   echo "Hour is "${NowHour} >> ${LogFile}
   exit 1
 fi
+echo "*******************************************************************************" >> ${LogDir_epgDump}
 
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
