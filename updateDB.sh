@@ -2,7 +2,7 @@
 
 #EPGDB更新を行う。
 
-#EPGDB更新プログラムのディレクトリ(更新プログラムの設定ファイルはここに置く)
+#EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)
 DBUpdaterDir=${HOME}/EPGUpdater
 
 #EPGDB更新プログラム(jar)のパス
