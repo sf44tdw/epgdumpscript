@@ -3,6 +3,20 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
+#スクリプトのログディレクトリ
+LogDir=${HOME}/Log
+if [ ! -e ${LogDir} ]; then
+`mkdir ${LogDir}`
+fi
+
+#日付取得
+Date=`date "+%Y%m%d%H%M%S"`
+#ファイル名生成
+FileName="D"${Date}"P"$$
+LogFile=${LogDir}"/"${FileName}".log"
+
+echo ${LogFile} > ${LogFile}
+
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _pname=`basename $0`
@@ -11,10 +25,18 @@ _pname=`basename $0`
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
 
+pdir=${HOME}
+
 #tsファイル保存先ディレクトリ
-tsdir=${HOME}/ts
+tsdir=${pdir}/ts
 if [ ! -e ${tsdir} ]; then
 `mkdir ${tsdir}`
+fi
+
+#EPG XMLファイル保存先ディレクトリ
+epgdir=${pdir}/epg_xml
+if [ ! -e ${epgdir} ]; then
+`mkdir ${epgdir}`
 fi
 
 #前回のファイルが残っているかも知れないので、念のため削除
@@ -32,7 +54,7 @@ do
 
 echo ${channel} >> ${LogFile}
 
-/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts
+/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>>${LogFile} 2>&1
 
 case ${channel} in
 
