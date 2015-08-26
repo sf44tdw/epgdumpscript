@@ -36,13 +36,13 @@ LogFile=${LogDir_epgDump}"/"${FileName}".log"
 echo ${LogFile} > ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
-echo "TIME" >> ${LogFile}
+echo "時間チェック" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_TIME=${SKIP_NO}
+SKIP_CHECK_HOUR=${SKIP_NO}
 
-if [ ${SKIP_CHECK_TIME} = ${SKIP_NO} ]; then
+if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} ]; then
 
  #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
  #今の時間(何時?)
@@ -58,9 +58,31 @@ if [ ${SKIP_CHECK_TIME} = ${SKIP_NO} ]; then
    echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
    exit 1
  fi
-else
+ else
     echo "時間チェックは行いませんでした。" >> ${LogFile}
 fi
+echo "*******************************************************************************" >> ${LogFile}
+
+echo "*******************************************************************************" >> ${LogFile}
+echo "分数チェック" >> ${LogFile}
+echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+
+ #今の時間(何分?)
+ NowMin=`date +%M`
+ 
+ #この処理を飛ばして次に行くか。
+SKIP_CHECK_MINUTE=${SKIP_NO}
+ 
+ if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} ]; then
+ #01～03分以外では起動しない。
+  if [ ${NowMin} != "01" -o ${NowMin} != "02" -o  ${NowMin} != "03" ]; then  
+   echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
+   exit 1
+ fi
+  else
+    echo "分数チェックは行いませんでした。" >> ${LogFile}
+fi
+
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
