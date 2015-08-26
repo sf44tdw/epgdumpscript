@@ -11,6 +11,7 @@ DBUpdaterDir=${HOME}/EPGUpdater
 #EPGDB更新プログラム(jar)のパス
 DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 
+sleep 2m
 
 #スクリプトのログディレクトリ
 LogDir=${HOME}/Log
@@ -26,14 +27,14 @@ LogFile=${LogDir}"/"${FileName}".log"
 
 echo ${LogFile} > ${LogFile}
 
-sleep 30s
+sleep 2m
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _pname=`basename $0`
 [ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
 
-sleep 30s
+sleep 2m
 
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
