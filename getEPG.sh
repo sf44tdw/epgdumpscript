@@ -4,7 +4,7 @@
 #BSch=101(NHK BS1)
 
 #スクリプトのログディレクトリ
-LogDir=${HOME}/Log
+LogDir=${HOME}/Log/epgDumpLog
 if [ ! -e ${LogDir} ]; then
 `mkdir ${LogDir}`
 fi
@@ -22,6 +22,10 @@ echo ${LogFile} > ${LogFile}
 _lockfile="/tmp/`basename $0`.lock"
 ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
 trap "rm $_lockfile; exit" 1 2 3 15
+
+# ファイル更新日時が10日を越えたログファイルを削除
+PARAM_DATE_NUM=10
+find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
