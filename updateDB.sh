@@ -14,9 +14,12 @@ pdir=${HOME}
 #EPG XMLファイル保存先ディレクトリ
 epgdir=${pdir}/epg_xml
 
+#ワークディレクトリをこのスクリプトが置かれている場所にする。
+cd `dirname $0`
+
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _pname=`basename $0`
 [ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >&2; exit 9; }
 
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
+java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
