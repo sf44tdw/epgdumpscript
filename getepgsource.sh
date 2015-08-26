@@ -31,7 +31,7 @@ if [ ! -e ${epgdir} ]; then
 fi
 
 #スクリプトのログディレクトリ
-LogDir=${pdir}/Log
+LogDir=${HOME}/Log
 if [ ! -e ${LogDir} ]; then
 `mkdir ${LogDir}`
 fi
