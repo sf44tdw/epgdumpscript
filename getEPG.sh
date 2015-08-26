@@ -3,22 +3,29 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
-#スクリプトのログディレクトリ
-LogDir=${HOME}/Log
+pdir=${HOME}
 
-LogDir_epgDump=${LogDir_P}/epgDumpLog
+#ログディレクトリ
+LogDir=${pdir}/Log
 if [ ! -e ${LogDir} ]; then
-`mkdir ${LogDir}`
+ `mkdir ${LogDir}`
 fi
 
-LogDir_epgDump=${LogDir_P}/epgDumpLog
+#DBへの追加ログ(ログの管理はjavaのロガーで行う)
+LogDir_UpdateDB=${LogDir}/epgUpdaterLog
+if [ ! -e ${LogDir_UpdateDB} ]; then
+ `mkdir ${LogDir_epgDump}`
+fi
+
+#EPGファイルの取得ログ
+LogDir_epgDump=${LogDir}/epgDumpLog
 if [ ! -e ${LogDir_epgDump} ]; then
-`mkdir ${LogDir_epgDump}`
+ `mkdir ${LogDir_epgDump}`
 fi
 
 #日付取得
 Date=`date "+%Y%m%d%H%M%S"`
-#ファイル名生成
+#EPGファイルの取得ログファイル名生成
 FileName="D"${Date}"P"$$
 LogFile=${LogDir_epgDump}"/"${FileName}".log"
 
@@ -27,6 +34,7 @@ echo ${LogFile} > ${LogFile}
 echo "*******************************************************************************" >> ${LogDir_epgDump}
 echo "TIME" >> ${LogDir_epgDump}
 
+#cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
 #今の時間(何時?)
 NowHour=`date +%k`
 
@@ -42,14 +50,14 @@ if [ ! "0" -eq ${mod} ]; then
 fi
 
 echo "*******************************************************************************" >> ${LogDir_epgDump}
-
+echo "instance" >> ${LogDir_epgDump}
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _lockfile="/tmp/`basename $0`.lock"
 ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
 trap "rm $_lockfile; exit" 1 2 3 15
 
-
+echo "*******************************************************************************" >> ${LogDir_epgDump}
 
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
@@ -58,8 +66,11 @@ find ${LogDir_epgDump} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
 
-pdir=${HOME}
-
+#tsファイル保存先ディレクトリ
+tsdir=${pdir}/tsDir
+if [ ! -e ${tsdir} ]; then
+`mkdir ${tsdir}`
+fi
 
 #EPG XMLファイル保存先ディレクトリ
 epgdir=${pdir}/epg_xml
@@ -103,10 +114,7 @@ done
 
 rm -f ${tsdir}/*.ts
 
-LogDir_UpdateDB=${LogDir_P}/epgDumpLog/epgUpdaterLog
-if [ ! -e ${LogDir_UpdateDB} ]; then
-`mkdir ${LogDir_epgDump}`
-fi
+
 
 #EPGDB更新を行う。
 
@@ -123,5 +131,7 @@ java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
 
 rm -f ${epgdir}/*.xml
 
-
+echo "*******************************************************************************" >> ${LogDir_epgDump}
+echo "instance" >> ${LogDir_epgDump}
 rm $_lockfile
+echo "*******************************************************************************" >> ${LogDir_epgDump}
