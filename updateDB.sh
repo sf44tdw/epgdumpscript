@@ -25,4 +25,6 @@ trap "rm $_lockfile; exit" 1 2 3 15
 
 java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
 
+rm -f ${epgdir}/*.xml
+
 rm $_lockfile
