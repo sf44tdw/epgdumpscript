@@ -36,9 +36,6 @@ if [ ! -e ${LogDir} ]; then
 `mkdir ${LogDir}`
 fi
 
-# ファイル更新日時が10日を越えたログファイルを削除
-PARAM_DATE_NUM=10
-find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 #日付取得
 Date=`date "+%Y%m%d%H%M%S"`
@@ -58,6 +55,10 @@ then
     echo "既に実行中のため、終了します。" >> ${LogFile}
     exit 1;
 fi
+
+# ファイル更新日時が10日を越えたログファイルを削除
+PARAM_DATE_NUM=10
+find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 
 #前回のファイルが残っているかも知れないので、念のため削除
 rm -f ${tsdir}/*.ts >> ${LogFile}  2>&1
