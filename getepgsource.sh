@@ -26,6 +26,8 @@ LogFile=${LogDir}"/"${FileName}".log"
 
 echo ${LogFile} > ${LogFile}
 
+sleep 30s
+
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _pname=`basename $0`
