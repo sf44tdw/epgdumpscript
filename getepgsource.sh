@@ -1,76 +1,25 @@
 #!/bin/bash
 
-USERINFO=~/.bashrc
-source ${USERINFO}
-
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
-
-#EPGDB更新プログラムのディレクトリ(更新プログラムの設定ファイルはここに置く)
-DBUpdaterDir=${HOME}/EPGUpdater
-#EPGDB更新プログラム(jar)のパス
-DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
-
-##########################################################################################################
-#echo "ログディレクトリ前" >1
-#sleep 2m
-
-#スクリプトのログディレクトリ
-LogDir=${HOME}/Log
-if [ ! -e ${LogDir} ]; then
-`mkdir ${LogDir}`
-fi
-
-#日付取得
-Date=`date "+%Y%m%d%H%M%S"`
-#ファイル名生成
-FileName="D"${Date}"P"$$
-LogFile=${LogDir}"/"${FileName}".log"
-
-echo ${LogFile} > ${LogFile}
-
-##########################################################################################################
-echo "ログファイル生成後" >1
-sleep 2m
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _pname=`basename $0`
 [ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
 
-##########################################################################################################
-echo "起動防止後" >1
-sleep 2m
-
-
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
 
-#このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
-#データ用ディレクトリの親ディレクトリ
-pdir=${PWD}
-#echo ${pdir}
-
-
 #tsファイル保存先ディレクトリ
-tsdir=${pdir}/ts
+tsdir=${HOME}/ts
 if [ ! -e ${tsdir} ]; then
 `mkdir ${tsdir}`
 fi
 
-#EPG XMLファイル保存先ディレクトリ
-epgdir=${pdir}/epg_xml
-if [ ! -e ${epgdir} ]; then
-`mkdir ${epgdir}`
-fi
-
-# ファイル更新日時が10日を越えたログファイルを削除
-PARAM_DATE_NUM=10
-find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
-
 #前回のファイルが残っているかも知れないので、念のため削除
-rm -f ${tsdir}/*.ts >> ${LogFile}  2>&1
-rm -f ${epgdir}/*.xml >> ${LogFile}  2>&1
+rm -f ${tsdir}/*.ts
+rm -f ${epgdir}/*.xml
 
 #放送局種別
 btype=0
@@ -83,7 +32,7 @@ do
 
 echo ${channel} >> ${LogFile}
 
-/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>>${LogFile} 2>&1
+/usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts
 
 case ${channel} in
 
@@ -104,10 +53,5 @@ done
 
 rm -f ${tsdir}/*.ts
 
-
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
-
-#更新プログラムを待たずに消しそうなのでコメントアウト
-#rm -f ${epgdir}/*.xml
 
 
