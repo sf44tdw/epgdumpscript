@@ -36,17 +36,6 @@ if [ ! -e ${LogDir} ]; then
 `mkdir ${LogDir}`
 fi
 
-#多重起動防止機講
-SCRIPT_PID=${pdir}/lock.pid
-if [ -f $SCRIPT_PID ]; then
-  PID=`cat $SCRIPT_PID `
-  if (ps -p $PID >/dev/null); then
-    exit
-  fi
-fi
-
-echo $$ > $SCRIPT_PID
-
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
 find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
@@ -61,6 +50,14 @@ LogFile=${LogDir}"/"${FileName}".log"
 btype=0
 
 echo ${LogFile} > ${LogFile}
+
+#多重起動防止機講
+# 同じ名前のプロセスが起動していたら起動しない。
+if [ "" != "`pgrep -fo $0`" ]
+then
+    echo "既に実行中のため、終了します。" >> ${LogFile}
+    exit 1;
+fi
 
 #前回のファイルが残っているかも知れないので、念のため削除
 rm -f ${tsdir}/*.ts >> ${LogFile}  2>&1
@@ -102,7 +99,4 @@ java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir} 1>>${LogFile} 2>&1
 #更新プログラムを待たずに消しそうなのでコメントアウト
 #rm -f ${epgdir}/*.xml
 
-
-
-rm $SCRIPT_PID
 
