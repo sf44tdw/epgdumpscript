@@ -52,7 +52,7 @@ for channel in 21 22 23 24 25 26 27 28 101
 #for channel in 21 22
 
 do
-
+echo "*******************************************************************************" >> ${LogFile}
 echo ${channel} >> ${LogFile}
 
 /usr/local/bin/recpt1 --strip --b25 ${channel} 90 ${tsdir}/${channel}.ts 1>>${LogFile} 2>&1
@@ -71,7 +71,7 @@ esac
 
 #echo ${btype}
 /usr/local/bin/epgdump ${btype} ${tsdir}/${channel}.ts ${epgdir}/${channel}.xml
-
+echo "*******************************************************************************" >> ${LogFile}
 done
 
 rm -f ${tsdir}/*.ts
