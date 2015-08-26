@@ -38,8 +38,9 @@ echo ${LogFile} > ${LogFile}
 echo "*******************************************************************************" >> ${LogFile}
 echo "TIME" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_TIME=${SKIP_YES}
+SKIP_CHECK_TIME=${SKIP_NO}
 
 if [ ${SKIP_CHECK_TIME} = ${SKIP_NO} ]; then
 
@@ -65,6 +66,7 @@ echo "**************************************************************************
 echo "*******************************************************************************" >> ${LogFile}
 echo "instance" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+
 #この処理を飛ばして次に行くか。
 SKIP_CHECK_INSTANCE=${SKIP_NO}
 
@@ -90,6 +92,12 @@ echo "**************************************************************************
 echo "*******************************************************************************" >> ${LogFile}
 echo "受信" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+
+#この処理を飛ばして次に行くか。
+SKIP_CHECK_RECEVE=${SKIP_NO}
+
+if [ ${SKIP_CHECK_RECEVE} = ${SKIP_NO} ]; then
+
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
 
@@ -113,8 +121,8 @@ rm -f ${epgdir}/*.xml
 btype=0
 
 #in以降にチャンネル番号をスペースで区切って記入する。
-for channel in 21 22 23 24 25 26 27 28 101
-#for channel in 21 22
+#for channel in 21 22 23 24 25 26 27 28 101
+for channel in 21 22
 
 do
 echo "*******************************************************************************" >> ${LogFile}
@@ -140,11 +148,20 @@ echo "**************************************************************************
 done
 
 rm -f ${tsdir}/*.ts
+else
+    echo "受信は行いませんでした。" >> ${LogFile}
+fi
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "EPGDB更新" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
+
+#この処理を飛ばして次に行くか。
+SKIP_CHECK_RECEVE=${SKIP_NO}
+
+if [ ${foo} = ${var} ]; then
+
 #EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)
 DBUpdaterDir=${HOME}/EPGUpdater
 
@@ -157,6 +174,11 @@ epgdir=${pdir}/epg_xml
 java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
 
 rm -f ${epgdir}/*.xml
+
+else
+    echo "受信は行いませんでした。" >> ${LogFile}
+fi
+
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
