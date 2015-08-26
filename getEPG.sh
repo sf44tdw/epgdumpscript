@@ -39,7 +39,7 @@ echo "TIME" >> ${LogFile}
 NowHour=`date +%k`
 
 #割る数
-Dev=4
+Dev=2
 
 mod=$(( ${NowHour} % ${Dev} ))
 
