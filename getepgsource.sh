@@ -54,7 +54,7 @@ find ${LogDir} -name "*.log" -type f -mtime +${PARAM_DATE_NUM} -exec rm -f {} \;
 #日付取得
 Date=`date "+%Y%m%d%H%M%S"`
 #ファイル名生成
-FileName="D"${Date}"P"$$"T"${Time}
+FileName="D"${Date}"P"$$
 LogFile=${LogDir}"/"${FileName}".log"
 
 #放送局種別
