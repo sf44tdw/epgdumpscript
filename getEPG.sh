@@ -24,48 +24,32 @@ LogFile=${LogDir_epgDump}"/"${FileName}".log"
 
 echo ${LogFile} > ${LogFile}
 
+echo "*******************************************************************************" >> ${LogDir_epgDump}
+echo "TIME" >> ${LogDir_epgDump}
+
+#今の時間(何時?)
+NowHour=`date +%H`
+
+#割る数
+Dev=4
+
+mod=$(( ${NowHour} % ${Dev} ))
+
+#割る数で割り切れない時間なら起動しない。
+if [ ! "0" -eq ${mod} ]; then  
+  echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
+  exit 1
+fi
+
+echo "*******************************************************************************" >> ${LogDir_epgDump}
+
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
 _lockfile="/tmp/`basename $0`.lock"
 ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
 trap "rm $_lockfile; exit" 1 2 3 15
 
-echo "*******************************************************************************" >> ${LogDir_epgDump}
-echo "TIME" >> ${LogDir_epgDump}
-NowHour=`date +%H`
-if [ ! "06" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "12" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "16" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "18" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "22" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "24" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "00" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-if [ ! "02" -eq ${NowHour} ]; then  
-  echo "Hour is "${NowHour} >> ${LogFile}
-  exit 1
-fi
-echo "*******************************************************************************" >> ${LogDir_epgDump}
+
 
 # ファイル更新日時が10日を越えたログファイルを削除
 PARAM_DATE_NUM=10
