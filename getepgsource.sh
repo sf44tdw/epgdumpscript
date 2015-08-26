@@ -1,4 +1,8 @@
 #!/bin/bash
+
+USERINFO=~/.bashrc
+source ${USERINFO}
+
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
@@ -15,7 +19,7 @@ cd `dirname $0`
 #このスクリプトが実行されているディレクトリ(ここと同じ場所にxmltv.dtdを置く必要がある)
 #データ用ディレクトリの親ディレクトリ
 pdir=${PWD}
-echo ${pdir}
+#echo ${pdir}
 
 
 #tsファイル保存先ディレクトリ
