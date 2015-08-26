@@ -53,7 +53,7 @@ echo ${LogFile} > ${LogFile}
 
 #多重起動防止機講
 # 同じ名前のプロセスが起動していたら起動しない。
-if [ "" != "`pgrep -fo $0`" ]
+if [ $$ != "`pgrep -fo $0`" ]
 then
     echo "既に実行中のため、終了します。" >> ${LogFile}
     exit 1;
