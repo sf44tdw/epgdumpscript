@@ -3,6 +3,10 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
+
+SKIP_YES="YES"
+SKIP_NO="NO"
+
 pdir=${HOME}
 
 #ログディレクトリ
@@ -34,29 +38,45 @@ echo ${LogFile} > ${LogFile}
 echo "*******************************************************************************" >> ${LogFile}
 echo "TIME" >> ${LogFile}
 
-#cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
-#今の時間(何時?)
-NowHour=`date +%k`
+#この処理を飛ばして次に行くか。
+SKIP_CHECK_TIME=${SKIP_YES}
 
-#割る数
-Dev=2
+if [ ${SKIP_CHECK_TIME} = ${SKIP_NO} ]; then
 
-mod=$(( ${NowHour} % ${Dev} ))
+ #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
+ #今の時間(何時?)
+ NowHour=`date +%k`
 
-#割る数で割り切れない時間なら起動しない。
-if [ ! "0" -eq ${mod} ]; then  
-  echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
-  exit 1
+ #割る数
+ Dev=2
+
+ mod=$(( ${NowHour} % ${Dev} ))
+
+ #割る数で割り切れない時間なら起動しない。
+ if [ ! "0" -eq ${mod} ]; then  
+   echo ${NowHour} " は、" ${Dev}"で割り切れる時間ではありません。">> ${LogFile}
+   exit 1
+ fi
+else
+    echo "時間チェックは行いませんでした。" >> ${LogFile}
 fi
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
 echo "instance" >> ${LogFile}
-#多重起動防止機講
-# 同じ名前のプロセスが起動していたら起動しない。
-_lockfile="/tmp/`basename $0`.lock"
-ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
-trap "rm $_lockfile; exit" 1 2 3 15
+
+#この処理を飛ばして次に行くか。
+SKIP_CHECK_INSTANCE=${SKIP_NO}
+
+if [ ${SKIP_CHECK_INSTANCE} = ${SKIP_NO} ]; then
+ #多重起動防止機講
+ # 同じ名前のプロセスが起動していたら起動しない。
+ _lockfile="/tmp/`basename $0`.lock"
+ ln -s /dummy $_lockfile 2> /dev/null || { echo 'Cannot run multiple instance.' >> ${LogFile}; exit 9; }
+ trap "rm $_lockfile; exit" 1 2 3 15
+else
+    echo "多重起動チェックは行いませんでした。" >> ${LogFile}
+fi
 echo "*******************************************************************************" >> ${LogFile}
 
 echo "*******************************************************************************" >> ${LogFile}
