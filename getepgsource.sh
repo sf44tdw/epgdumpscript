@@ -31,6 +31,8 @@ echo ${LogFile} > ${LogFile}
 _pname=`basename $0`
 [ $$ != `pgrep -fo $_pname` ] && { echo "既に実行中のため、終了します。" >>${LOGFILE}; exit 9; }
 
+sleep 30s
+
 
 #ワークディレクトリをこのスクリプトが置かれている場所にする。
 cd `dirname $0`
