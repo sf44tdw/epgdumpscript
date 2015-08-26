@@ -90,7 +90,7 @@ case ${channel} in
 esac
 
 #echo ${btype}
-epgdump ${btype} ${tsdir}/${channel}.ts ${epgdir}/${channel}.xml
+/usr/local/bin/epgdump ${btype} ${tsdir}/${channel}.ts ${epgdir}/${channel}.xml
 
 done
 
