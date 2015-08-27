@@ -33,21 +33,21 @@ echo "ログディレクトリ作成"
 echo ${LogDir} >2
 LogDir=${pdir}/Log
 if [ ! -e ${LogDir} ]; then
- `mkdir "${LogDir}"`
+ `mkdir "$LogDir"`
 fi
 
 echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
 echo ${LogDir_UpdateDB}  >2
 LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 if [ ! -e ${LogDir_UpdateDB} ]; then
- `mkdir "${LogDir_epgDump}"`
+ `mkdir "$LogDir_epgDump"`
 fi
 
 echo "EPGファイルの取得ログ"
 echo ${LogDir_epgDump}  >2
 LogDir_epgDump=${LogDir}/epgDumpLog
 if [ ! -e ${LogDir_epgDump} ]; then
- `mkdir "${LogDir_epgDump}"`
+ `mkdir "$LogDir_epgDump"`
 fi
 
 #日付取得
