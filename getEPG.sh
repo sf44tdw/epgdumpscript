@@ -12,8 +12,11 @@ cd `dirname $0`
 #EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)(外部で定義)
 #DBUpdaterDir=${HOME}/EPGUpdater
 
-#設定読み込み
+echo "設定読み込み"
 source getEPG.conf
+
+#更新プログラムのパスを追加しておく。
+export PATH=$PATH:${DBUpdaterDir}
 
 #EPGDB更新プログラム(jar)のパス
 DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
@@ -22,22 +25,29 @@ DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 #SKIP_YES="YES"
 #SKIP_NO="NO"
 
-#ログディレクトリ
+#bashの場合、mkdir -p "$deploydir"
+#としないと不具合(mkdir: missing operand)が出ることがあるらしい。
+
+
+echo "ログディレクトリ作成"
+echo ${LogDir} 
 LogDir=${pdir}/Log
 if [ ! -e ${LogDir} ]; then
- `mkdir ${LogDir}`
+ `mkdir "${LogDir}"`
 fi
 
-#DBへの追加ログ(ログの管理はjavaのロガーで行う)
+echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
+echo ${LogDir_UpdateDB} 
 LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 if [ ! -e ${LogDir_UpdateDB} ]; then
- `mkdir ${LogDir_epgDump}`
+ `mkdir "${LogDir_epgDump}"`
 fi
 
-#EPGファイルの取得ログ
+echo "EPGファイルの取得ログ"
+echo ${LogDir_epgDump} 
 LogDir_epgDump=${LogDir}/epgDumpLog
 if [ ! -e ${LogDir_epgDump} ]; then
- `mkdir ${LogDir_epgDump}`
+ `mkdir "${LogDir_epgDump}"`
 fi
 
 #日付取得
