@@ -3,11 +3,24 @@
 #EPG取得のため、地上波物理チャンネル全てと、BSチャンネルから1つを選択し、90秒間録画する。
 #BSch=101(NHK BS1)
 
+#ワークディレクトリをこのスクリプトが置かれている場所にする。(相対パスで同じディレクトリにあるファイルを読み込むため。)
+cd `dirname $0`
 
+#これら２つの変数はgetEPG.confから読み込む
+#録画ファイル,EPGファイル,ログの保存先ディレクトリ(外部で定義)
+#pdir=${HOME}
+#EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)(外部で定義)
+#DBUpdaterDir=${HOME}/EPGUpdater
+
+#設定読み込み
+source getEPG.conf
+
+#EPGDB更新プログラム(jar)のパス
+DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
+
+#一部の処理を飛ばすときのフラグ変数
 SKIP_YES="YES"
 SKIP_NO="NO"
-
-pdir=${HOME}
 
 #ログディレクトリ
 LogDir=${pdir}/Log
@@ -36,6 +49,10 @@ LogFile=${LogDir_epgDump}"/"${FileName}".log"
 echo ${LogFile} > ${LogFile}
 
  #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
+ 
+ #時間チェック、分数チェックともを飛ばして次に行くか。
+ SKIP_CHECK_HOUR_AND_MINUTE=${SKIP_NO}
+ 
 echo "*******************************************************************************" >> ${LogFile}
 echo "時間チェック" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
@@ -43,7 +60,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #この処理を飛ばして次に行くか。
 SKIP_CHECK_HOUR=${SKIP_NO}
 
-if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} ]; then
+if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
 
  #今の時間(何時?)
  NowHour=`date +%k`
@@ -74,7 +91,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
  #この処理を飛ばして次に行くか。
 SKIP_CHECK_MINUTE=${SKIP_NO}
  
- if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} ]; then
+ if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
  #01～03分以外では起動しない。
   if [ ${NowMin} != "01" -o ${NowMin} != "02" -o  ${NowMin} != "03" ]; then  
    echo ${NowMin} " は、01～03分以外です。">> ${LogFile}
@@ -120,9 +137,6 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 SKIP_CHECK_RECEVE=${SKIP_NO}
 
 if [ ${SKIP_CHECK_RECEVE} = ${SKIP_NO} ]; then
-
-#ワークディレクトリをこのスクリプトが置かれている場所にする。
-cd `dirname $0`
 
 #tsファイル保存先ディレクトリ
 tsdir=${pdir}/tsDir
@@ -185,21 +199,12 @@ SKIP_CHECK_RECEVE=${SKIP_NO}
 
 if [ ${foo} = ${var} ]; then
 
-#EPGDB更新プログラムとDTDファイルのディレクトリ(更新プログラムの設定ファイルはここに置く)
-DBUpdaterDir=${HOME}/EPGUpdater
-
-#EPGDB更新プログラム(jar)のパス
-DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
-
-#EPG XMLファイル保存先ディレクトリ
-epgdir=${pdir}/epg_xml
-
 java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
 
 rm -f ${epgdir}/*.xml
 
 else
-    echo "受信は行いませんでした。" >> ${LogFile}
+    echo "DB更新は行いませんでした。" >> ${LogFile}
 fi
 
 echo "*******************************************************************************" >> ${LogFile}
