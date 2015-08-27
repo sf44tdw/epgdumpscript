@@ -42,7 +42,7 @@ LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
 echo ${LogDir_UpdateDB}  
 if [ ! -e ${LogDir_UpdateDB} ]; then
- `mkdir "$LogDir_epgDump"`
+ `mkdir "$LogDir_UpdateDB"`
 fi
 
 
