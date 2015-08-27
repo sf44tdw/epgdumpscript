@@ -73,7 +73,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 #この処理を飛ばして次に行くか。
 #SKIP_CHECK_HOUR=${SKIP_NO}
 
-if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
+if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} -a  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
 
  #今の時間(何時?)
  NowHour=`date +%k`
@@ -104,7 +104,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
  #この処理を飛ばして次に行くか。
  #SKIP_CHECK_MINUTE=${SKIP_NO}
  
- if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
+ if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} -a  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
  #01～03分以外では起動しない。
   if [ ${NowMin} != "01" -o ${NowMin} != "02" -o  ${NowMin} != "03" ]; then  
    echo ${NowMin} " は、01～03分以外です。">> ${LogFile}
