@@ -29,23 +29,26 @@ DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 #としないと不具合(mkdir: missing operand)が出ることがあるらしい。
 
 
+
+LogDir=${pdir}/Log
 echo "ログディレクトリ作成"
 echo ${LogDir} >2
-LogDir=${pdir}/Log
 if [ ! -e ${LogDir} ]; then
  `mkdir "$LogDir"`
 fi
 
+
+LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
 echo ${LogDir_UpdateDB}  >2
-LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 if [ ! -e ${LogDir_UpdateDB} ]; then
  `mkdir "$LogDir_epgDump"`
 fi
 
+
+LogDir_epgDump=${LogDir}/epgDumpLog
 echo "EPGファイルの取得ログ"
 echo ${LogDir_epgDump}  >2
-LogDir_epgDump=${LogDir}/epgDumpLog
 if [ ! -e ${LogDir_epgDump} ]; then
  `mkdir "$LogDir_epgDump"`
 fi
