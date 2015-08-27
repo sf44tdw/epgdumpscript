@@ -32,7 +32,7 @@ DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 
 LogDir=${pdir}/Log
 echo "ログディレクトリ作成"
-echo ${LogDir} >2
+echo ${LogDir} 
 if [ ! -e ${LogDir} ]; then
  `mkdir "$LogDir"`
 fi
@@ -40,7 +40,7 @@ fi
 
 LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
-echo ${LogDir_UpdateDB}  >2
+echo ${LogDir_UpdateDB}  
 if [ ! -e ${LogDir_UpdateDB} ]; then
  `mkdir "$LogDir_epgDump"`
 fi
@@ -48,7 +48,7 @@ fi
 
 LogDir_epgDump=${LogDir}/epgDumpLog
 echo "EPGファイルの取得ログ"
-echo ${LogDir_epgDump}  >2
+echo ${LogDir_epgDump}  
 if [ ! -e ${LogDir_epgDump} ]; then
  `mkdir "$LogDir_epgDump"`
 fi
