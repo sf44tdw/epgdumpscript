@@ -19,8 +19,8 @@ source getEPG.conf
 DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 
 #一部の処理を飛ばすときのフラグ変数
-SKIP_YES="YES"
-SKIP_NO="NO"
+#SKIP_YES="YES"
+#SKIP_NO="NO"
 
 #ログディレクトリ
 LogDir=${pdir}/Log
@@ -50,15 +50,15 @@ echo ${LogFile} > ${LogFile}
 
  #cronが設定を無視して1分毎に大量に起動させることがあるので、独自に制限をかける。
  
- #時間チェック、分数チェックともを飛ばして次に行くか。
- SKIP_CHECK_HOUR_AND_MINUTE=${SKIP_NO}
+ #時間チェック、分数チェックとも飛ばして次に行くか。
+ #SKIP_CHECK_HOUR_AND_MINUTE=${SKIP_NO}
  
 echo "*******************************************************************************" >> ${LogFile}
 echo "時間チェック" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_HOUR=${SKIP_NO}
+#SKIP_CHECK_HOUR=${SKIP_NO}
 
 if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
 
@@ -89,7 +89,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
  NowMin=`date +%M`
  
  #この処理を飛ばして次に行くか。
-SKIP_CHECK_MINUTE=${SKIP_NO}
+ #SKIP_CHECK_MINUTE=${SKIP_NO}
  
  if [ ${SKIP_CHECK_MINUTE} = ${SKIP_NO} -o  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_NO} ]; then
  #01～03分以外では起動しない。
@@ -108,7 +108,7 @@ echo "instance" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_INSTANCE=${SKIP_NO}
+#SKIP_CHECK_INSTANCE=${SKIP_NO}
 
 if [ ${SKIP_CHECK_INSTANCE} = ${SKIP_NO} ]; then
  # 多重起動防止機講
@@ -134,7 +134,7 @@ echo "受信" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_RECEVE=${SKIP_NO}
+#SKIP_CHECK_RECEVE=${SKIP_NO}
 
 if [ ${SKIP_CHECK_RECEVE} = ${SKIP_NO} ]; then
 
@@ -195,7 +195,7 @@ echo "EPGDB更新" >> ${LogFile}
 echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 #この処理を飛ばして次に行くか。
-SKIP_CHECK_RECEVE=${SKIP_NO}
+#SKIP_CHECK_RECEVE=${SKIP_NO}
 
 if [ ${foo} = ${var} ]; then
 
