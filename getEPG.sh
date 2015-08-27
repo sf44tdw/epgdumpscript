@@ -29,20 +29,14 @@ DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 #としないと不具合(mkdir: missing operand)が出ることがあるらしい。
 
 
-
+#mkdirに-pをつけないと1階層ずつしか作れない。
 LogDir=${pdir}/Log
-echo "ログディレクトリ作成"
-echo ${LogDir} 
-if [ ! -e ${LogDir} ]; then
- `mkdir "$LogDir"`
-fi
-
 
 LogDir_UpdateDB=${LogDir}/epgUpdaterLog
 echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
 echo ${LogDir_UpdateDB}  
 if [ ! -e ${LogDir_UpdateDB} ]; then
- `mkdir "$LogDir_UpdateDB"`
+ `mkdir -p "$LogDir_UpdateDB"`
 fi
 
 
@@ -50,7 +44,7 @@ LogDir_epgDump=${LogDir}/epgDumpLog
 echo "EPGファイルの取得ログ"
 echo ${LogDir_epgDump}  
 if [ ! -e ${LogDir_epgDump} ]; then
- `mkdir "$LogDir_epgDump"`
+ `mkdir -p "$LogDir_epgDump"`
 fi
 
 #日付取得
