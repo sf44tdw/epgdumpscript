@@ -208,7 +208,7 @@ if [ ${foo} = ${var} ]; then
 
 java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8"
 
-rm -f ${epgdir}/*.xml
+#rm -f ${epgdir}/*.xml
 
 else
     echo "DB更新は行いませんでした。" >> ${LogFile}
