@@ -73,7 +73,7 @@ if [ ${SKIP_CHECK_HOUR} = ${SKIP_NO} -a  ${SKIP_CHECK_HOUR_AND_MINUTE} = ${SKIP_
  NowHour=`date +%k`
 
  #割る数
- Dev=2
+ Dev=4
 
  mod=$(( ${NowHour} % ${Dev} ))
 
