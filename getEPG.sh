@@ -206,7 +206,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 if [ ${foo} = ${var} ]; then
 
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" ${epgdir}
+java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8"
 
 rm -f ${epgdir}/*.xml
 
