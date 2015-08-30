@@ -32,12 +32,12 @@ DBUpdater=${DBUpdaterDir}/EPGUpdater.jar
 #mkdirに-pをつけないと1階層ずつしか作れない。
 LogDir=${pdir}/Log
 
-LogDir_UpdateDB=${LogDir}/epgUpdaterLog
-echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
-echo ${LogDir_UpdateDB}  
-if [ ! -e ${LogDir_UpdateDB} ]; then
- `mkdir -p "$LogDir_UpdateDB"`
-fi
+#LogDir_UpdateDB=${LogDir}/epgUpdaterLog
+#echo "DBへの追加ログ(ログの管理はjavaのロガーで行う)"
+#echo ${LogDir_UpdateDB}  
+#if [ ! -e ${LogDir_UpdateDB} ]; then
+# `mkdir -p "$LogDir_UpdateDB"`
+#fi
 
 
 LogDir_epgDump=${LogDir}/epgDumpLog
@@ -206,7 +206,7 @@ echo `date "+%Y-%m-%d %H:%M:%S"`>> ${LogFile}
 
 if [ ${foo} = ${var} ]; then
 
-java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8"
+java -jar ${DBUpdater} ${DBUpdaterDir} "UTF-8" 1>>${LogFile} 2>&1
 
 #rm -f ${epgdir}/*.xml
 
