@@ -40,7 +40,7 @@ LogDir=${pdir}/Log
 #fi
 
 
-LogDir_epgDump=${LogDir}/epgDumpLog
+LogDir_epgDump=${LogDir}
 echo "EPGファイルの取得ログ"
 echo ${LogDir_epgDump}  
 if [ ! -e ${LogDir_epgDump} ]; then
